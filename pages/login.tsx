@@ -3,6 +3,8 @@ import { Typography, Row, Col } from 'antd';
 import { Form, Input, Button, Radio, Checkbox, Space } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
+import { useRouter } from 'next/router'
+
 import axios from 'axios';
 
 const {Title} = Typography;
@@ -24,10 +26,17 @@ type LogInfo = {
 }
 
 function Login() {
-
+    const router = useRouter()
     const onFinish = (values: LogInfo) => {
-        console.log(values);
         // use axios to post the login request
+        console.log(values);
+        axios.post('https://cms.chtoma.com/api/login',{
+            email: values.email,
+            password: values.password,
+            role: values.role
+        })
+        router.push("/dashboard");
+        
     };
 
     return (
@@ -73,7 +82,7 @@ function Login() {
                                 },
                                 {
                                     min: 4,
-                                    message: '\'password\' must be between 4 and 16 characters'
+                                    message: '\'password\' must be between 4 and 16 characters',                                   
                                 },
                                 {
                                     max: 16,
