@@ -2,10 +2,12 @@ import styled from 'styled-components';
 import { Typography, Row, Col } from 'antd';
 import { Form, Input, Button, Radio, Checkbox, Space } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { message } from 'antd';
 
 import { useRouter } from 'next/router'
 
 import axios from 'axios';
+import { AES } from 'crypto-js';
 
 const {Title} = Typography;
 
@@ -19,29 +21,46 @@ const StyledButton = styled(Button) `
 `;
 
 type LogInfo = {
-    email: string,
-    password: string,
-    role: string,
-    remember: boolean
+    email: string;
+    password: string;
+    role: string;
+    remember: boolean;
 }
 
 function Login() {
-    const router = useRouter()
-    const onFinish = (values: LogInfo) => {
-        // use axios to post the login request
-        console.log(values);
+    const router = useRouter();
+    const onFinish = (formValues: LogInfo) => {
         axios.post('https://cms.chtoma.com/api/login',{
-            email: values.email,
-            password: values.password,
-            role: values.role
+            email: formValues.email,
+            password: AES.encrypt(formValues.password, 'cms').toString(),
+            role: formValues.role
         })
-        router.push("/dashboard");
+        .then((response) => {
+            if(response.data.code === 201) {
+                let loginResponse = response.data.data;
+                if (loginResponse) {
+                    localStorage.setItem("token", loginResponse.token);
+                    localStorage.setItem("role", loginResponse.role);
+                    localStorage.setItem("userId", loginResponse.userId);
+                }
+                router.push("/dashboard");
+            } else {
+                // should not be here
+                console.log(response.data);
+            }
+        }).catch((error) => {
+            if (error.response.status === 401) {
+                message.error("Please check your email or password");
+            }
+            //console.log(error.response.status);
+        })
         
     };
 
     return (
         <div>
             <StyledTitle>COURSE MANAGEMENT ASSISTANT</StyledTitle>
+
             <Row justify="center">
                 <Col span={8}>
                     <Form 
@@ -58,6 +77,7 @@ function Login() {
                                 <Radio.Button value="manager">Manager</Radio.Button>
                             </Radio.Group>
                         </Form.Item>
+
                         <Form.Item
                             name="email"
                             rules={[
@@ -73,6 +93,7 @@ function Login() {
                         >
                             <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Please input email" />
                         </Form.Item>
+
                         <Form.Item
                             name="password"
                             rules={[
@@ -87,8 +108,9 @@ function Login() {
                                 {
                                     max: 16,
                                     message: '\'password\' must be between 4 and 16 characters'
-                                }
+                                },
                             ]}
+                            validateTrigger="onBlur"
                         >
                             <Input
                             prefix={<LockOutlined className="site-form-item-icon" />}
@@ -96,6 +118,7 @@ function Login() {
                             placeholder="Please input password"
                             />
                         </Form.Item>
+
                         <Form.Item>
                             <Form.Item name="remember" valuePropName="checked" noStyle>
                                 <Checkbox>Remember me</Checkbox>
@@ -107,10 +130,12 @@ function Login() {
                                 Sign in
                             </StyledButton>
                         </Form.Item>
+
                         <Space>
                             <span>No account?</span>
                             <a href="/signup">Sign up</a>
                         </Space>
+
                     </Form>
                 </Col>
             </Row>
