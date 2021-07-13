@@ -1,107 +1,82 @@
 import { useEffect, useState } from "react";
 import AppLayout from "../../../components/layout/AppLayout";
 import { Table } from 'antd';
+import studentService from "../../../app/services/studentService";
+import { Course, Student, StudentType } from "../../../app/model/student";
 
-import router, { useRouter } from 'next/router';
-import axios from "axios";
-
-const columns = [ 
-    {
-        title: 'No.',
-        key: 'id',
-        dataIndex: 'id'
-    },
-    {
-        title: 'Name',
-        key: 'name',
-        dataIndex: 'name'
-    },
-    {
-        title: 'Area',
-        key: 'area',
-        dataIndex: 'area'
-    },
-    {
-        title: 'Selected Curriculum',
-        key: 'selectedCurriculum',
-        dataIndex: 'selectedCurriculum'
-    },
-    {
-        title: 'Student type',
-        key: 'studentType',
-        dataIndex: 'studentType'
-    },
-    {
-        title: 'Join time',
-        key: 'joinTime',
-        dataIndex: 'joinTime'
-    },
-    {
-        title: 'Action',
-        key: 'action'
-    }
-]
-
-type studentRecord = {
-    id: number,
-    name: string,
-    area: string,
-    email: string,
-    selectedCurriculum: string,
-    studentType: string,
-    joinTime: string
-}
-
-function parseStudentListData(data: any) : studentRecord[]{
-    // console.log(data)
-    let records:studentRecord[]  = new Array<studentRecord>();
-    for (let student of data.students) {
-        let record:studentRecord = {
-            id: student.id,
-            name: student.name,
-            area: student.country,
-            email: student.email,
-            selectedCurriculum: 'do it later ',
-            studentType: 'type later',
-            joinTime: student.createdAt
-        }
-        records.push(record);
-        //console.log(student);
-    }
-    return records;
-}
 
 const Students = () => {
+    const [total, setTotal] = useState(0)
+    const [students, setStudents] = useState<Student[]>([]);
+    const [paginator, setPaginator] = useState({limit: 20, page: 1})
 
-    const router = useRouter();
-
-    const [studentRecords, setStudentRecords] = useState<studentRecord[]>([]);
+    const columns = [ 
+        {
+            title: 'No.',
+            key: 'id',
+            dataIndex: 'id'
+        },
+        {
+            title: 'Name',
+            key: 'name',
+            dataIndex: 'name'
+        },
+        {
+            title: 'Area',
+            key: 'country',
+            dataIndex: 'country'
+        },
+        {
+            title: 'Email',
+            key: 'email',
+            dataIndex: 'email'
+        },
+        {
+            title: 'Selected Curriculum',
+            key: 'courses',
+            dataIndex: 'courses',
+            render: (courses: Course[]) => courses.map((item)=> item.name).join(",")
+        },
+        {
+            title: 'Student type',
+            key: 'type',
+            dataIndex: 'type',
+            render: (type: StudentType) => ( type?.name )
+        },
+        {
+            title: 'Join time',
+            key: 'createAt',
+            dataIndex: 'createAt'
+        },
+        {
+            title: 'Action',
+            key: 'action'
+        }
+    ]
 
     useEffect(() => {
-        if(!localStorage.getItem('token')) {
-            router.push('/login');
-        } else {
-            axios({
-                method: 'get',
-                url: 'https://cms.chtoma.com/api/students?limit=20&page=1',
-                headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}
-            })
-            .then((response) => {
-                //console.log(response);
-                let parsedData = parseStudentListData(response.data.data);
-                setStudentRecords(parsedData);
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+        async function fetchStudentRecords() {
+            const { data } = await studentService.getStudents(paginator.limit,paginator.page);
+            if(!!data) {
+                setStudents(data.students);
+                setTotal(data.total);
+            }
         }
-    })
+        fetchStudentRecords();
+    },[paginator]);
 
     return(
         <AppLayout>
             <Table
+                rowKey='id'
                 columns={columns}
-                dataSource={studentRecords} 
+                dataSource={students} 
+                pagination={{total: total, current:paginator.page, pageSize: paginator.limit}}
+                onChange = {
+                    ({current, pageSize}) => {
+                        setPaginator({ page: current as number, limit: pageSize as number });
+                    }
+                }
             ></Table>
         </AppLayout>
     )

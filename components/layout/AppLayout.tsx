@@ -4,7 +4,6 @@ import { Layout, Menu, Row } from 'antd';
 import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
-    UserOutlined,
     MessageOutlined,
     DashboardOutlined,
     DeploymentUnitOutlined, 
@@ -56,47 +55,47 @@ const AppLayout =  (props: React.PropsWithChildren<any>) => {
 
     return (
         <Layout style={{height: '100vh'}}>
-        <Sider collapsible collapsed={collapsed} >
-            <Logo>
-                {collapsed ? <Image src="/bcd-logo-blue-small.png" alt="logo" width={48} height={32} ></Image> : <Image src="/bcd-logo-blue.svg" alt="logo" width={168} height={32} ></Image>}
-            </Logo>
-            <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-                <Menu.Item key="1" icon={<DashboardOutlined />}>
-                    <Link href="/dashboard">
-                        Overview
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key="2" icon={<SolutionOutlined />}>
-                    <Link href="/dashboard/students">
-                        Student
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key="3" icon={<DeploymentUnitOutlined />}>
-                    Teacher
-                </Menu.Item>
-                <Menu.Item key="4" icon={<ReadOutlined />}>
-                    Course
-                </Menu.Item>
-                <Menu.Item key="5" icon={<MessageOutlined />}>
-                    Message
-                </Menu.Item>
-            </Menu>
-        </Sider>
+            <Sider collapsible collapsed={collapsed} >
+                <Logo>
+                    {collapsed ? <Image src="/bcd-logo-blue-small.png" alt="logo" width={48} height={32} ></Image> : <Image src="/bcd-logo-blue.svg" alt="logo" width={168} height={32} ></Image>}
+                </Logo>
+                <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+                    <Menu.Item key="1" icon={<DashboardOutlined />}>
+                        <Link href="/dashboard">
+                            Overview
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key="2" icon={<SolutionOutlined />}>
+                        <Link href="/dashboard/students">
+                            Student
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key="3" icon={<DeploymentUnitOutlined />}>
+                        Teacher
+                    </Menu.Item>
+                    <Menu.Item key="4" icon={<ReadOutlined />}>
+                        Course
+                    </Menu.Item>
+                    <Menu.Item key="5" icon={<MessageOutlined />}>
+                        Message
+                    </Menu.Item>
+                </Menu>
+            </Sider>
 
-        <Layout >
-            <StyledHeader>
-                <CollapsedMenuIcon onClick={() => setCollapsed(!collapsed)}>
-                    {collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
-                </CollapsedMenuIcon>
-                <Row align="middle">
-                    <UserIcon />
-                </Row>
-            </StyledHeader>
-            <StyledContent>
-                {children}
-            </StyledContent>
+            <Layout style={{width:'100%', overflowX:'hidden'}}>
+                <StyledHeader>
+                    <CollapsedMenuIcon onClick={() => setCollapsed(!collapsed)}>
+                        {collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
+                    </CollapsedMenuIcon>
+                    <Row align="middle">
+                        <UserIcon />
+                    </Row>
+                </StyledHeader>
+                <StyledContent>
+                    {children}
+                </StyledContent>
+            </Layout>
         </Layout>
-    </Layout>
     )
 }
 

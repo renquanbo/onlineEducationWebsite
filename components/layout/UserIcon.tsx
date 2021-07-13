@@ -1,28 +1,16 @@
 import { Avatar, Dropdown, Menu } from 'antd';
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
-
-import router, { useRouter } from 'next/router'
-
-import axios from 'axios';
+import { useRouter } from 'next/router'
+import userService from '../../app/services/userService';
 
 function UserIcon() {
     const router = useRouter();
 
-    const logout = () => {
-
-        axios({
-            method: 'post',
-            url: 'https://cms.chtoma.com/api/logout',
-            headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}
-        })
-        .then((response)=>{
-            console.log(response);
-            localStorage.clear();
+    const logout = async () => {
+        const isLogout = await userService.logout();
+        if(isLogout) {
             router.push('/login');
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+        }   
     };
 
     const menu = (

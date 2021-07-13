@@ -2,12 +2,9 @@ import styled from 'styled-components';
 import { Typography, Row, Col } from 'antd';
 import { Form, Input, Button, Radio, Checkbox, Space } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { message } from 'antd';
-
 import { useRouter } from 'next/router'
-
-import axios from 'axios';
-import { AES } from 'crypto-js';
+import { LoginRequest } from '../app/model/login';
+import userService from '../app/services/userService';
 
 const {Title} = Typography;
 
@@ -20,41 +17,13 @@ const StyledButton = styled(Button) `
     width: 100%;
 `;
 
-type LogInfo = {
-    email: string;
-    password: string;
-    role: string;
-    remember: boolean;
-}
-
 function Login() {
     const router = useRouter();
-    const onFinish = (formValues: LogInfo) => {
-        axios.post('https://cms.chtoma.com/api/login',{
-            email: formValues.email,
-            password: AES.encrypt(formValues.password, 'cms').toString(),
-            role: formValues.role
-        })
-        .then((response) => {
-            if(response.data.code === 201) {
-                let loginResponse = response.data.data;
-                if (loginResponse) {
-                    localStorage.setItem("token", loginResponse.token);
-                    localStorage.setItem("role", loginResponse.role);
-                    localStorage.setItem("userId", loginResponse.userId);
-                }
-                router.push("/dashboard");
-            } else {
-                // should not be here
-                console.log(response.data);
-            }
-        }).catch((error) => {
-            if (error.response.status === 401) {
-                message.error("Please check your email or password");
-            }
-            //console.log(error.response.status);
-        })
-        
+    const login = async (formValues: LoginRequest) => {
+        const loginSuccess = await userService.login(formValues);
+        if(loginSuccess) {
+            router.push("/dashboard");
+        }
     };
 
     return (
@@ -66,7 +35,7 @@ function Login() {
                     <Form 
                         name="login"
                         initialValues={{ remember: true , role: 'student'}}
-                        onFinish={onFinish}
+                        onFinish={login}
                     >
                         <Form.Item
                             name="role"
