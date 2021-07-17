@@ -1,13 +1,13 @@
 import { Avatar, Dropdown, Menu } from 'antd';
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router'
-import userService from '../../app/services/userService';
+import authService from '../../app/services/authService';
 
 function UserIcon() {
     const router = useRouter();
 
     const logout = async () => {
-        const isLogout = await userService.logout();
+        const isLogout = await authService.logout();
         if(isLogout) {
             router.push('/login');
         }   

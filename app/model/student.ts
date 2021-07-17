@@ -26,3 +26,17 @@ export interface Student {
 export interface StudentResponse extends ListResponse{
     students: Student[]
 }
+
+export interface AddStudentRequest {
+    name: string;
+    country: string;
+    email: string;
+    type: number;
+}
+
+export type AddStudentResponse = Student;
+export type UpdateStudentResponse = Student;
+
+export interface UpdateStudentRequest extends AddStudentRequest{
+    id: number
+}

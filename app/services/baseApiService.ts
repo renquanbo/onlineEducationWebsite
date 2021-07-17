@@ -35,11 +35,26 @@ export class BaseApiService {
             .catch((err) => this.errorHandler(err));
     }
 
+    protected async delete<T>(path: string): Promise<T> {
+        return axiosInstance
+            .delete(path)
+            .then((res) => res.data)
+            .catch(this.errorHandler);
+    }
+    
+    protected async put<T>(path: string, data: object): Promise<T> {
+        return axiosInstance
+            .put(path, data)
+            .then((res) => res.data)
+            .catch(this.errorHandler);
+    }
+
+
+
     private errorHandler(err: AxiosError<IResponse>) : IResponse | null{
         const msg = err.response?.data.msg;
         const code = err.response?.status;
         if (typeof msg === 'string' && typeof code === 'number') {
-            console.log({msg, code});
             return {msg, code};
         } else {
             return null;

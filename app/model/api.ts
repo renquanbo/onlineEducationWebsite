@@ -9,7 +9,7 @@ export interface Paginator {
     limit: number;
 }
 
-export interface ListResponse<T = any> {
+export interface ListResponse {
     total: number;
     paginator: Paginator;
 }

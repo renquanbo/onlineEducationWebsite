@@ -4,7 +4,7 @@ import { Form, Input, Button, Radio, Checkbox, Space } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router'
 import { LoginRequest } from '../app/model/login';
-import userService from '../app/services/userService';
+import authService from '../app/services/authService';
 
 const {Title} = Typography;
 
@@ -20,7 +20,7 @@ const StyledButton = styled(Button) `
 function Login() {
     const router = useRouter();
     const login = async (formValues: LoginRequest) => {
-        const loginSuccess = await userService.login(formValues);
+        const loginSuccess = await authService.login(formValues);
         if(loginSuccess) {
             router.push("/dashboard");
         }
