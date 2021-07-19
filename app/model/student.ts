@@ -1,24 +1,19 @@
 import { ListResponse } from "./api";
+import { Course, CourseDetails } from "./course";
 
-export interface Course {
-    id: number;
-    courseId: number;
-    name: string;
-}
-  
 export interface StudentType {
     id: number;
     name: string;
 }
 
-export interface Student {
+export interface Student<T = Course> {
     id: number;
     name: string;
     updatedAt: string;
     country: string;
     createdAt: string;
     email: string;
-    courses: Course[];
+    courses: T[];
     profileId: number;
     type: StudentType;
 }
@@ -40,3 +35,17 @@ export type UpdateStudentResponse = Student;
 export interface UpdateStudentRequest extends AddStudentRequest{
     id: number
 }
+
+export interface StudentProfile extends Student<CourseDetails>{
+    address: string | null;
+    phone: number;
+    gender: number;
+    education: string;
+    age: number;
+    interest: string[];
+    avatar: string;
+    memberStartAt: string;
+    memberEndAt: string;
+    description: string;
+}
+

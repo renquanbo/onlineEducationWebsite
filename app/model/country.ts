@@ -5,6 +5,4 @@ export interface Country {
     phone_code: string;
 }
 
-export interface CountryResponse {
-    countries: Country[];
-}
+export type CountryResponse = Country[];

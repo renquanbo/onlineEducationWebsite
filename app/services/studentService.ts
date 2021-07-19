@@ -1,5 +1,5 @@
 import { IResponse } from "../model/api";
-import { AddStudentRequest, AddStudentResponse, StudentResponse, UpdateStudentRequest, UpdateStudentResponse } from "../model/student";
+import { AddStudentRequest, AddStudentResponse, StudentProfile, StudentResponse, UpdateStudentRequest, UpdateStudentResponse } from "../model/student";
 import { BaseApiService } from "./baseApiService";
 
 class StudentService extends BaseApiService {
@@ -19,8 +19,12 @@ class StudentService extends BaseApiService {
         return this.put<IResponse<UpdateStudentResponse>>('students',updateStuReq).then(this.showMessage(true));
     }
 
-    deleteStudent(id: string) {
+    deleteStudent(id: number) {
         return this.delete<IResponse<Boolean>>('students/'+id).then(this.showMessage(true));
+    }
+
+    getStudentById(id: number): Promise<IResponse<StudentProfile>>{
+        return this.get<IResponse<StudentProfile>>('students/'+id);
     }
 }
 

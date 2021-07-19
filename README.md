@@ -50,7 +50,7 @@
     - logout 方法
 - StudentService
     - getStudents
-
+---
 
 ## Tasks 14/07/2021 - 17/07/2021
 ---
@@ -79,3 +79,26 @@
     - 添加form到modal中
     - 实现add，update 接口方法
 - 实现delete student
+---
+
+## Tasks 14/07/2021 - 17/07/2021
+---
+- menu以及sub menu
+    - menuConfig 里的每一个menuItem 都需要有 路由，key，icon，title或者label，subMenu
+        - 可以把路由当做key,但这里会有重复key的问题，需要后面解决一下
+    - 渲染时 
+        - 有subMenu 渲染subMenu
+        - 无subMenu 直接渲染Menu.Item
+        - 拿到当前路由地址来判断defaultSelectedKeys 和 defaultOpenKeys
+            - 超过两级路由时
+                - 最后一级路由作为 defaultSelectedKeys
+                - 最后一级路由的上一级路由 作为defaultOpenKeys
+- student details 界面
+    - 添加路由到指定id的student页面
+    - 拿到路由query里的student id
+    - 发请求拿到单个 student 数据
+    - 添加相关组件并渲染数据
+- breadcrumb
+    - 拿到路由当前的pathname
+    - 匹配pathname对应的breadcrumb数组
+    - 用数组的map方法渲染breadcrumb组件
