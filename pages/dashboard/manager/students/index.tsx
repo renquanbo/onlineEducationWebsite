@@ -1,15 +1,16 @@
 import { useEffect, useState, useRef, ChangeEvent } from "react";
-import AppLayout from "../../../components/layout/AppLayout";
+import AppLayout from "../../../../components/layout/AppLayout";
 import { Space, Table, Row, Col, Button, Input, Form, Select,Modal, Popconfirm } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ColumnType } from 'antd/lib/table';
-import studentService from "../../../app/services/studentService";
-import { AddStudentRequest, Student, StudentType, UpdateStudentRequest } from "../../../app/model/student";
-import { Course } from "../../../app/model/course";
+import studentService from "../../../../app/services/studentService";
+import { AddStudentRequest, Student, StudentType, UpdateStudentRequest } from "../../../../app/model/student";
+import { Course } from "../../../../app/model/course";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import Link from "next/link";
 import { debounce } from "lodash";
-import storage from "../../../app/services/storage";
+import storage from "../../../../app/services/storage";
+import { useRouter } from "next/router";
 
 const { Search } = Input;
 const { Option } = Select;
@@ -29,6 +30,7 @@ const Students = () => {
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
     const [modifyStudentSuccessTimes, setModifyStudentSuccessTimes] = useState(0);
+    const router = useRouter();
 
     const columns:ColumnType<Student>[] = [ 
         {
@@ -43,7 +45,7 @@ const Students = () => {
             sorter: (a: Student, b: Student) => (a.name.charCodeAt(0) - b.name.charCodeAt(0)),
             // eslint-disable-next-line react/display-name
             render: (text,record: Student,index) => 
-                (<Link href={`/dashboard/students/${record.id}`}>{record.name}</Link>)
+                (<Link href={router.pathname + '/' + record.id}>{record.name}</Link>)
         },
         {
             title: 'Area',
@@ -97,7 +99,6 @@ const Students = () => {
                     >
                         <a>Delete</a>
                     </Popconfirm>
-                    
                 </Space>
             ),
         },

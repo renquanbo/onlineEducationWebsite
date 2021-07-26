@@ -1,5 +1,5 @@
 import { Typography } from "antd";
-import AppLayout from "../../../components/layout/AppLayout";
+import AppLayout from "../../../../components/layout/AppLayout";
 
 const AddCourse = () => {
 

@@ -3,11 +3,11 @@ import { useRouter } from "next/router";
 import Link from 'next/link';
 import styled from 'styled-components';
 import { useEffect, useState } from "react";
-import { StudentProfile } from "../../../app/model/student";
-import { CourseDetails, CourseType } from "../../../app/model/course";
-import studentService from "../../../app/services/studentService";
-import AppLayout from "../../../components/layout/AppLayout";
-import { programLanguageColors } from "../../../app/lib/constant";
+import { StudentProfile } from "../../../../app/model/student";
+import { CourseDetails, CourseType } from "../../../../app/model/course";
+import studentService from "../../../../app/services/studentService";
+import AppLayout from "../../../../components/layout/AppLayout";
+import { programLanguageColors } from "../../../../app/lib/constant";
 import Table, { ColumnType } from 'antd/lib/table';
 
 const StyledH3 = styled.h3`

@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import areaService from '../../app/services/areaService';
-import storage from '../../app/services/storage';
-import AppLayout from '../../components/layout/AppLayout';
+import areaService from '../../../app/services/areaService';
+import storage from '../../../app/services/storage';
+import AppLayout from '../../../components/layout/AppLayout';
 
 
 
-const Dashboard = () => {
+const ManagerDashboard = () => {
 
     useEffect(() => {
         async function fetchAreas() {
@@ -19,9 +19,9 @@ const Dashboard = () => {
 
     return (
         <AppLayout>
-            <h1>This is index (overview) page</h1>
+            <h1>This is index page of manager dashboard</h1>
         </AppLayout>
     )
 }
 
-export default Dashboard;
+export default ManagerDashboard;

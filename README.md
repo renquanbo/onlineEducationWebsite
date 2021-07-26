@@ -81,7 +81,7 @@
 - 实现delete student
 ---
 
-## Tasks 14/07/2021 - 17/07/2021
+## Tasks 18/07/2021 - 20/07/2021
 ---
 - menu以及sub menu
     - menuConfig 里的每一个menuItem 都需要有 路由，key，icon，title或者label，subMenu
@@ -102,3 +102,16 @@
     - 拿到路由当前的pathname
     - 匹配pathname对应的breadcrumb数组
     - 用数组的map方法渲染breadcrumb组件
+
+## Tasks 25/07/2021 - 27/07/2021
+---
+- 用户登录，得到role
+    - 跳转到对应的路由
+    - 根据role 渲染side nav
+      - 每个菜单项的路由，key
+      - 对于defaultSelectedKeys 和 defaultOpenKeys，拿到path后
+        - 去掉 id 参数
+    - 根据path 渲染breadcrumb
+      - 生成面包屑数组
+      - 详情页 添加detail到数组里
+      - 非详情页 最后一个元素去掉link
