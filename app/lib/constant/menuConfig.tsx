@@ -201,26 +201,24 @@ export function getDefaultKeys(generatedMenus: MenuItem[], path: string):
   return {defaultSelectedKeys, defaultOpenKeys};
 }
 
-function getActiveMenuItems(menuItems: MenuItem[], path: string, record: MenuItem[]): [MenuItem | null, MenuItem[]] {
+function getActiveMenuItems(menuItems: MenuItem[], path: string, record: MenuItem[]): MenuItem[] {
   for(let menuItem of menuItems) {
     record.push(menuItem);
     if(menuItem.path === path) {
-      return [menuItem, record];
+      return record;
     } else if(menuItem.subMenu !== null) {
-      let [resMenuItem, resRecord] = getActiveMenuItems(menuItem.subMenu, path, record);
-      if(resMenuItem !== null) {
-        return [resMenuItem, resRecord];
+      let resultRecord = getActiveMenuItems(menuItem.subMenu, path, record);
+      if(resultRecord.length > 0) {
+        return resultRecord;
       }
-      record.pop();
-    } else {
-      record.pop();
     }
+    record.pop();
   }
-  return [null, []];
+  return [];
 }
 
 export function getBreadcrumbs(generatedMenus: MenuItem[], path: string): MenuItem[] {
-  let [activeMenuItem, activeMenuItems] = getActiveMenuItems(generatedMenus, omitDetailPath(path), []);
+  let activeMenuItems= getActiveMenuItems(generatedMenus, omitDetailPath(path), []);
   if(isDetailPath(path)) {
     activeMenuItems.push(
       {
