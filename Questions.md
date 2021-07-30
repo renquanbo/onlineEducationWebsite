@@ -23,3 +23,14 @@
 此时编译不通过
 
 - 动态设置filters的问题  调用react的state作为filters的参数时，此时的state为undefined
+
+## Questions 28/07/2021 - 31/07/2021
+```typescript
+export default function CourseOverview(
+  props: React.PropsWithChildren<Course> & { cardProps?: CardProps }
+) {
+    /** code */
+}
+```
+> 这里的 & 怎么理解 
+- 我的理解是 把cardProps 里的属性加到前面的以Course为类型的props里面

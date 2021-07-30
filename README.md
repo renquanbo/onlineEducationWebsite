@@ -115,3 +115,20 @@
       - 生成面包屑数组
       - 详情页 添加detail到数组里
       - 非详情页 最后一个元素去掉link
+
+## Tasks 28/07/2021 - 31/07/2021
+---
+- 课程首页
+  - 建课程model
+  - 写api调用函数
+  - 调用api 获取课程列表
+  - 渲染课程列表
+- 抽象公用的获取列表useListEffect函数  目的：代码复用，减少相同代码
+    - 类型：request 类型, response 类型
+    - 参数 apiRequest function
+    - 公用函数 useEffect
+    - 返回值 包括 
+        - data(学生 课程 或者其他)
+        - loading状态
+        - total 列表项目总数
+        - set状态的方法（setPaginator, setTotal等等)

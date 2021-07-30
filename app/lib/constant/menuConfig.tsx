@@ -50,19 +50,19 @@ const courses: MenuItem = {
   icon: <ReadOutlined />,
   subMenu: [
     {
-      label: 'All courses',
+      label: 'All Courses',
       path: '',
       icon: <ProjectOutlined />,
       subMenu: null
     },
     {
-      label: 'Add courses',
+      label: 'Add Course',
       path: '/add-course',
       icon: <FileAddOutlined />,
       subMenu: null
     },
     {
-      label: 'Edit courses',
+      label: 'Edit Course',
       path: '/edit-course',
       icon: <EditOutlined />,
       subMenu: null

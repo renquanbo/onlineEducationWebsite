@@ -96,7 +96,7 @@ const AppLayout = (props: React.PropsWithChildren<any>) => {
         </Menu>
       </Sider>
 
-      <Layout style={{ width: '100%', overflowX: 'hidden' }}>
+      <Layout style={{ width: '100%', overflowX: 'hidden' }} id="contentLayout">
         <StyledHeader>
           <CollapsedMenuIcon onClick={() => setCollapsed(!collapsed)}>
             {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
