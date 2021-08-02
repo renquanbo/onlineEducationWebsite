@@ -1,10 +1,10 @@
-import { Card,Row,Col, Button } from "antd";
+import { Card,Row,Col, CardProps } from "antd";
 import { HeartFilled, UserOutlined } from '@ant-design/icons';
 import { Gutter } from "antd/lib/grid/row";
 import { Course } from "../../app/model/course";
 import styled from 'styled-components';
 import { DurationUnit } from "../../app/lib/constant/duration";
-import Link from "next/link";
+
 
 const gutterValues:[Gutter,Gutter] = [6, 16];
 
@@ -28,10 +28,12 @@ const getDuration = (data: Course) => {
   return data.duration > 1 ? text + 's' : text;
 }
 
-export default function CourseOverview(props: Course) {
+export default function CourseOverview(
+  props: React.PropsWithChildren<Course> & { cardProps?: CardProps }
+) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <Card cover={<img src={props.cover} alt="course cover" style={{ height: 260 }}></img>}>
+    <Card cover={<img src={props.cover} alt="course cover" style={{ height: 260 }}></img>} {...props.cardProps}>
       <Row gutter={gutterValues}>
         <h3>{props.name}</h3>
       </Row>
@@ -58,7 +60,7 @@ export default function CourseOverview(props: Course) {
         </StyledCol>
       </StyledRow>
 
-      <Row gutter={gutterValues} justify="space-between">
+      <Row gutter={gutterValues} justify="space-between" style={{paddingBottom:8}}>
         <StyledCol>
           <UserOutlined style={{ marginRight: 5, fontSize: 16, color: '#1890ff' }} />
           <span>Student Limit:</span>
@@ -68,9 +70,7 @@ export default function CourseOverview(props: Course) {
         </StyledCol>
       </Row>
 
-      <Link href="#" passHref>
-        <Button type="primary" style={{marginTop: "8px"}}>Read More</Button>
-      </Link>
+      {props.children}
     </Card>
   )
 }

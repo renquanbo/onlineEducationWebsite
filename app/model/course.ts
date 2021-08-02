@@ -1,4 +1,4 @@
-import { ListResponse } from "./api";
+import { ListResponse, Paginator } from "./api";
 
 export interface CourseType {
     id: number;
@@ -10,7 +10,7 @@ export interface CourseShort {
     name: string;
 }
 
-export interface CourseDetails extends CourseShort{
+export interface StudentCourse extends CourseShort{
     createdAt: string;
     updatedAt: string;
     courseDate: string;
@@ -42,3 +42,45 @@ export interface Course {
 export interface CourseResponse extends ListResponse {
     courses: Course[];
 }
+
+export interface CourseRequest{
+    id: string;
+    code?: string;
+    name?: string;
+    type?: number;
+    userId?: number;
+    page?: number;
+    limit?: number;
+}
+
+interface Sales {
+    id: number;
+    batches: number;
+    price: number;
+    earnings: number;
+    paidAmount: number;
+    studentAmount: number;
+    paidIds: number[];
+  }
+  
+  export interface Schedule {
+    id: number;
+    status: number;
+    current: number;
+    chapters: Chapter[];
+    classTime: string[];
+  }
+  
+  export interface Chapter {
+    name: string;
+    id: number;
+    content: string;
+    order: number;
+  }
+  
+  export interface CourseDetail extends Course {
+    sales: Sales;
+    schedule: Schedule;
+  }
+  
+  export type CourseDetailResponse = CourseDetail;

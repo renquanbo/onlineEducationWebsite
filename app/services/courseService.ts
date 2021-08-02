@@ -1,13 +1,13 @@
-import { IResponse } from "../model/api";
-import { CourseResponse } from "../model/course";
+import { IResponse, Paginator } from "../model/api";
+import { CourseDetailResponse, CourseRequest, CourseResponse } from "../model/course";
 import { BaseApiService } from "./baseApiService";
 
 class CourseService extends BaseApiService {
-    getCourses(): Promise<IResponse<CourseResponse>> {
-        return this.get<IResponse<CourseResponse>>('courses');
+    getCourses(params?: CourseRequest): Promise<IResponse<CourseResponse>> {
+        return this.get('courses', params);
     }
-    getCoursesByPageAndLimit(page:number, limit: number): Promise<IResponse<CourseResponse>> {
-        return this.get<IResponse<CourseResponse>>('courses?page='+page+'&limit='+limit);
+    getCourseById(id: string): Promise<IResponse<CourseDetailResponse>> {
+        return this.get('courses/detail',{ id: id });
     }
 }
 

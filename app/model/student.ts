@@ -1,5 +1,5 @@
 import { ListResponse } from "./api";
-import { Course, CourseDetails } from "./course";
+import { Course, StudentCourse } from "./course";
 
 export interface StudentType {
     id: number;
@@ -36,7 +36,7 @@ export interface UpdateStudentRequest extends AddStudentRequest{
     id: number
 }
 
-export interface StudentProfile extends Student<CourseDetails>{
+export interface StudentProfile extends Student<StudentCourse>{
     address: string | null;
     phone: number;
     gender: number;

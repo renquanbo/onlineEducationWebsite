@@ -21,9 +21,9 @@ axiosInstance.interceptors.request.use((config) => {
 })
 
 export class BaseApiService {
-    protected async get<T>(path: string): Promise<T>{
+    protected async get<T>(path: string, params?: any): Promise<T>{
         return axiosInstance
-            .get(path)
+            .get(path, {params:params})
             .then((res) => res.data)
             .catch((err) => this.errorHandler(err));
     }

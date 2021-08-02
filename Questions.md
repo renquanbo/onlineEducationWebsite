@@ -34,3 +34,15 @@ export default function CourseOverview(
 ```
 > 这里的 & 怎么理解 
 - 我的理解是 把cardProps 里的属性加到前面的以Course为类型的props里面
+
+## Questions 1/08/2021 - 3/08/2021
+```typescript
+const [courseDetail, setCourseDetail] = useState<CourseDetail>(null);
+// 这里会报错 
+// Argument of type 'null' is not assignable to parameter of type 'CourseDetail | (() => CourseDetail)
+```
+我理解他报错是因为，在tsconfig里 "strict"为true的时候，"strictNullChecks" 也是true，此时null不是所有类型的子类型，所以不兼容CourseDetail
+然后我把 "strictNullChecks" 设置为false，编译可通过，但也引来以下的思考
+- 此时有没有副作用，会不会是自己挖了个坑在这
+- 我也试了另一种方法让编译器通过，就是在调用 courseDetail时 使用非空断言  {...courseDetail!}
+    - 这两种方法孰优孰劣（我个人认为这两个方法本质上是一样的，应该都没有从根本上解决问题)

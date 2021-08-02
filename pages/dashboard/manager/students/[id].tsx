@@ -4,7 +4,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { useEffect, useState } from "react";
 import { StudentProfile } from "../../../../app/model/student";
-import { CourseDetails, CourseType } from "../../../../app/model/course";
+import { StudentCourse, CourseType } from "../../../../app/model/course";
 import studentService from "../../../../app/services/studentService";
 import AppLayout from "../../../../components/layout/AppLayout";
 import { programLanguageColors } from "../../../../app/lib/constant";
@@ -26,7 +26,7 @@ const StudentDetails = () => {
     const router = useRouter();
     const { id } = router.query;
     const [studentProfile, setStudentProfile] = useState<StudentProfile>();
-    const columns: ColumnType<CourseDetails>[] = [
+    const columns: ColumnType<StudentCourse>[] = [
         {
             title: 'No.',
             key: 'index',

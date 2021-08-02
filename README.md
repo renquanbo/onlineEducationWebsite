@@ -124,7 +124,7 @@
   - 调用api 获取课程列表
   - 渲染课程列表
 - 抽象公用的获取列表useListEffect函数  目的：代码复用，减少相同代码
-    - 类型：request 类型, response 类型
+    - 类型：request 类型, response 类型, response里的data数据类型
     - 参数 apiRequest function
     - 公用函数 useEffect
     - 返回值 包括 
@@ -132,3 +132,12 @@
         - loading状态
         - total 列表项目总数
         - set状态的方法（setPaginator, setTotal等等)
+## Tasks 1/08/2021 - 3/08/2021
+---
+- course details 界面
+    - 根据api添加course model
+    - 添加getCourseById方法
+    - 添加路由到指定id的course页面
+    - 拿到路由query里的course id
+    - 发请求拿到单个 course 数据
+    - 添加相关组件并渲染数据
