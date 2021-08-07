@@ -46,3 +46,17 @@ const [courseDetail, setCourseDetail] = useState<CourseDetail>(null);
 - 此时有没有副作用，会不会是自己挖了个坑在这
 - 我也试了另一种方法让编译器通过，就是在调用 courseDetail时 使用非空断言  {...courseDetail!}
     - 这两种方法孰优孰劣（我个人认为这两个方法本质上是一样的，应该都没有从根本上解决问题)
+
+
+## Questions 4/08/2021 - 6/08/2021
+```typescript
+<InputNumber
+    formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+    parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+    min={0}
+    style={{ width: '100%' }}
+>
+</InputNumber>
+```
+这里在parser里的那个函数会报错，报错信息为 `Type 'string' is not assignable to type '0'` 这里不能理解，为什么会把min里的0 当做一个类型
+但是并不影响程序运行, 是否与tsconfig 有关
