@@ -106,10 +106,14 @@ const TD = styled.td`
 `
 
 const getChapterExtra = (source: Schedule, index: number) => {
-  const activeIndex = source.chapters.findIndex((item) => item.id === source.current);
-  const status = index === activeIndex ? 1 : index < activeIndex ? 0 : 2;
-
-  return <Tag color={CourseStatusColor[status]}>{CourseStatusText[status]}</Tag>;
+  if(!! source) {
+    const activeIndex = source.chapters.findIndex((item) => item.id === source.current);
+    const status = index === activeIndex ? 1 : index < activeIndex ? 0 : 2;
+  
+    return <Tag color={CourseStatusColor[status]}>{CourseStatusText[status]}</Tag>;
+  } else {
+    return {}
+  }
 };
 
 interface ClassTime {
@@ -129,17 +133,19 @@ const CourseDetailPage = () => {
       if (!!id && typeof id === "string") {
         const { data } = await courseService.getCourseById(id)
         if (!!data) {
-          const newClassTimeTableData = weekDays.map((weekDay) => {
-            const target =
-                data.schedule.classTime.find((item) => item.toLocaleLowerCase().includes(weekDay.toLocaleLowerCase())) || '';
-            const time = target.split(' ')[1];
-            return {weekDay: weekDay, time: time}
-          });
-          setClassTimeTableData(newClassTimeTableData);
-          setActiveChapterIndex(
-            data.schedule.chapters.findIndex((item) => item.id === data.schedule.current)
-          );
           setCourseDetail(data);
+          if(!!data.schedule) {
+            const newClassTimeTableData = weekDays.map((weekDay) => {
+              const target =
+                  data.schedule.classTime.find((item) => item.toLocaleLowerCase().includes(weekDay.toLocaleLowerCase())) || '';
+              const time = target.split(' ')[1];
+              return {weekDay: weekDay, time: time}
+            });
+            setClassTimeTableData(newClassTimeTableData);
+            setActiveChapterIndex(
+              data.schedule.chapters.findIndex((item) => item.id === data.schedule.current)
+            );
+          }
         }
       }
     }
@@ -188,7 +194,7 @@ const CourseDetailPage = () => {
 
             <StepsRow>
               <Steps size="small" current={activeChapterIndex} style={{ width: 'auto' }}>
-                {courseDetail?.schedule.chapters.map((item) => (
+                {courseDetail?.schedule?.chapters.map((item) => (
                   <Steps.Step title={item.name} key={item.id}></Steps.Step>
                 ))}
               </Steps>

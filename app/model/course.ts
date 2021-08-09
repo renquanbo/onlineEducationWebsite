@@ -84,3 +84,28 @@ export interface CourseDetail extends Course {
 }
 
 export type CourseDetailResponse = CourseDetail;
+
+export type AddCourseResponse = Course;
+
+export interface AddCourseRequest {
+  name: string,
+  uid: string,
+  detail: string,
+  startTime: string,
+  price: number,
+  maxStudents: number,
+  duration: number,
+  durationUnit: number,
+  cover: string,
+  teacherId: number,
+  type: number[]
+}
+
+export interface ScheduleRequest {
+  scheduleId?: number;
+  courseId?: number;
+  current?: number;
+  statue?: number;
+  chapters?: Omit<Chapter, 'id'>[];
+  classTime?: string[];
+}
