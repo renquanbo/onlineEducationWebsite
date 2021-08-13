@@ -26,8 +26,8 @@ const AddCourse = () => {
   }
 
   const steps = [
-    <AddCourseForm key={1} onSuccess={onSuccess}></AddCourseForm>,
-    <UpdateChapterForm key={2} courseId={courseId} scheduleId={scheduleId} onSuccess={moveToNext}></UpdateChapterForm>,
+    <AddCourseForm key={1} onSuccess={onSuccess} isUpdate={false}></AddCourseForm>,
+    <UpdateChapterForm key={2} courseId={courseId} scheduleId={scheduleId} onSuccess={moveToNext} isAdd={true}></UpdateChapterForm>,
     <Result
       key={3}
       status="success"

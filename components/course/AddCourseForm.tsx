@@ -1,5 +1,5 @@
 import { CloseCircleOutlined, InboxOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Form, Input, InputNumber, Row, Select, Spin, Upload } from 'antd';
+import { Button, Col, DatePicker, Form, Input, InputNumber, message, Row, Select, Spin, Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { useForm } from 'antd/lib/form/Form';
 import TextArea from 'antd/lib/input/TextArea';
@@ -82,10 +82,12 @@ const customHeaders:HttpRequestHeader = {
 }
 
 interface AddCourseFormProps {
-  onSuccess?: (course: Course) => void
+  isUpdate: boolean;
+  course?: Course;
+  onSuccess?: (course: Course) => void;
 }
 
-export default function AddCourseForm({onSuccess} : AddCourseFormProps) {
+export default function AddCourseForm({onSuccess, course,isUpdate} : AddCourseFormProps) {
 
   const [form] = useForm();
   const [teachers, setTeachers] = useState<Teacher[]>([]);
@@ -125,12 +127,24 @@ export default function AddCourseForm({onSuccess} : AddCourseFormProps) {
   };
 
   const onFinish = async (formValues: any) => {
+    if (isUpdate && !course) {
+      message.error('You must select a course to update!');
+      return;
+    }
+
     let request: AddCourseRequest = {
       ...formValues,
       startTime: formValues.startTime !== null ? format(formValues.startTime.toDate(), 'yyyy-MM-dd') : '',
+      teacherId: +formValues.teacherId || +course.teacherId,
       durationUnit: durationUnit
     }
-    const { data } = await courseService.addCourse(request);
+
+    const response = isUpdate 
+      ? courseService.updateCourse({...request, id: course.id}) 
+      : courseService.addCourse(request);
+
+    const { data } = await response;
+
     if(!!onSuccess && !! data) {
       onSuccess(data);
     }
@@ -150,9 +164,28 @@ export default function AddCourseForm({onSuccess} : AddCourseFormProps) {
       }
     }
     fetchCourseTypes();
-    fetchCourseCode();
+    if(!course) {
+      fetchCourseCode();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    if (!!course) {
+      const values = {
+        ...course,
+        type: course.type.map(item => item.id),
+        teacherId: course.teacherName,
+        startTime: moment(new Date(course.startTime)),
+        duration: course.duration,
+        durationUnit: course.durationUnit
+      };
+
+      form.setFieldsValue(values);
+
+      setFileList([{ name: 'Cover Image', url: course.cover }]);
+    }
+  }, [course]);
 
   return (
     <>
@@ -315,7 +348,7 @@ export default function AddCourseForm({onSuccess} : AddCourseFormProps) {
           <Col span={8}>
             <Form.Item>
               <Button type="primary" htmlType="submit" disabled={isUploading}>
-                Create Course
+                {isUpdate ? 'Update Course' : 'Create Course'}
               </Button>
             </Form.Item>
           </Col>

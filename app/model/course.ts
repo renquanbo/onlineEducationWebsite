@@ -44,7 +44,7 @@ export interface CourseResponse extends ListResponse {
 }
 
 export interface CourseRequest {
-  id: string;
+  id?: string;
   code?: string;
   name?: string;
   type?: number;
@@ -86,6 +86,12 @@ export interface CourseDetail extends Course {
 export type CourseDetailResponse = CourseDetail;
 
 export type AddCourseResponse = Course;
+
+export interface UpdateCourseRequest {
+  id: number;
+}
+
+export type UpdateCourseResponse = Course;
 
 export interface AddCourseRequest {
   name: string,

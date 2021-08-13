@@ -60,3 +60,28 @@ const [courseDetail, setCourseDetail] = useState<CourseDetail>(null);
 ```
 这里在parser里的那个函数会报错，报错信息为 `Type 'string' is not assignable to type '0'` 这里不能理解，为什么会把min里的0 当做一个类型
 但是并不影响程序运行, 是否与tsconfig 有关
+
+## Questions 11/08/2021 - 14/08/2021
+关于typescript 类型的思考，比如 这个方法`updateCourse(req: UpdateCourseRequest)` 参数类型是 `UpdateCourseRequest` 其定义是
+
+```typescript
+export interface UpdateCourseRequest {
+  id: number;
+}
+```
+在调用时用的是 `courseService.updateCourse({...request, id: course.id})`
+这里的原因是因为只要有`id`这个属性，那么`{...request, id: course.id}`这个参数就可以当做`UpdateCourseRequest` 这个类型吗
+
+另一问题是 关于 `lib/util/table-helper.ts`里的`genCommonTableProps`这个函数怎么理解，它是不是一个克里化的函数，如果是, 那么中间的
+```typescript
+TableProps<any> = ({
+  columns,
+  data,
+  paginator,
+  total,
+  loading,
+  setPaginator,
+  rowKey = 'id',
+})
+```
+怎么理解, 它是一个函数的传入参数声明吗

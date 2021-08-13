@@ -9,6 +9,7 @@ import studentService from "../../../../app/services/studentService";
 import AppLayout from "../../../../components/layout/AppLayout";
 import { programLanguageColors } from "../../../../app/lib/constant";
 import Table, { ColumnType } from 'antd/lib/table';
+import storage from "../../../../app/services/storage";
 
 const StyledH3 = styled.h3`
     color: #7356f1;
@@ -37,7 +38,7 @@ const StudentDetails = () => {
             dataIndex: 'name',
             // eslint-disable-next-line react/display-name
             render: (value, record) => (
-                <Link href='#'>{value}</Link>
+                <Link href={`/dashboard/${storage.userInfo.role}/courses/${record.id}`}>{value}</Link>
             ),
         },
         {
