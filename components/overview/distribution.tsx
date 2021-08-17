@@ -227,8 +227,7 @@ export default function Distribution() {
     async function fetchWorldMap() {
       const {data} = await statisticService.getWorldMap();
       if (!!data) {
-        console.log(data);
-        setWorldMap(worldMap);
+        setWorldMap(data);
         setOptions({
           series: [{ mapData: data }],
         })
@@ -244,12 +243,10 @@ export default function Distribution() {
         text:'c title'
       },
       series:[{
-        type: 'map',
         mapData: worldMap,
         data:mockData
       }]
     };
-    console.log(worldMap);
     setOptions(options);
   }, [worldMap]);
 

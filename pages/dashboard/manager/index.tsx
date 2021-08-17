@@ -1,4 +1,4 @@
-import { SolutionOutlined } from '@ant-design/icons';
+import { DeploymentUnitOutlined, ReadOutlined, SolutionOutlined } from '@ant-design/icons';
 import { Card, Col, Progress, Row } from 'antd';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -15,10 +15,10 @@ const StyledLabelContainer = styled(Col)`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
+  font-size: 1.8em;
   .anticon {
     background: #fff;
-    padding: 25px;
+    padding: 0.7em;
     border-radius: 50%;
     color: #999;
   }
@@ -72,10 +72,10 @@ const ManagerDashboard = () => {
     <AppLayout>
       <Row align="middle" gutter={[24, 16]}>
         <Col span={8}>
-          <StyledCard bordered={true} style={{ background: "rgb(24, 144, 255);" }}>
+          <StyledCard bordered={true} style={{ background: "rgb(24, 144, 255)" }}>
             <Row>
               <StyledLabelContainer span={6}>
-                <SolutionOutlined ></SolutionOutlined>
+                <SolutionOutlined></SolutionOutlined>
               </StyledLabelContainer>
               <Col span={18}>
                 <h3>TOTAL STUDENTS</h3>
@@ -93,10 +93,10 @@ const ManagerDashboard = () => {
           </StyledCard>
         </Col>
         <Col span={8}>
-          <StyledCard bordered={true} style={{ background: "rgb(103, 59, 183);" }}>
+          <StyledCard bordered={true} style={{ background: "rgb(103, 59, 183)" }}>
             <Row>
               <StyledLabelContainer span={6}>
-                <SolutionOutlined ></SolutionOutlined>
+                <DeploymentUnitOutlined />
               </StyledLabelContainer>
               <Col span={18}>
                 <h3>TOTAL TEACHERS</h3>
@@ -114,10 +114,10 @@ const ManagerDashboard = () => {
           </StyledCard>
         </Col>
         <Col span={8}>
-          <StyledCard bordered={true} style={{ background: "rgb(255, 170, 22);" }}>
+          <StyledCard bordered={true} style={{ background: "rgb(255, 170, 22)" }}>
             <Row>
               <StyledLabelContainer span={6}>
-                <SolutionOutlined ></SolutionOutlined>
+                <ReadOutlined />
               </StyledLabelContainer>
               <Col span={18}>
                 <h3>TOTAL COURSES</h3>
