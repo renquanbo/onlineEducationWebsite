@@ -197,7 +197,7 @@ const Teachers = () => {
         pagination={{ total: total, current: paginator.page, pageSize: paginator.limit }}
         onChange={
           ({ current, pageSize }) => {
-            setPaginator({ page: current as number, limit: pageSize as number });
+            setPaginator({ limit: pageSize, page: current});
           }
         }
         loading={loading}

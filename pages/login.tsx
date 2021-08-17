@@ -12,6 +12,7 @@ const {Title} = Typography;
 const StyledTitle = styled(Title)`
     text-align: center;
     margin:0.5em 0px;
+    font-family: 'BebasNeue';
 `;
 
 const StyledButton = styled(Button) `
