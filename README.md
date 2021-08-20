@@ -141,3 +141,16 @@
     - 拿到路由query里的course id
     - 发请求拿到单个 course 数据
     - 添加相关组件并渲染数据
+
+## Tasks 18/08/2021 - 21/08/2021
+---
+- Languages 柱状图
+    
+    - 根据teacher skills里的数据
+        - 拿到teacher skills 里面的 keys 生成key pair 数组，并以keys生成 x轴
+    - 遍历 skills生成的key pair数组 根据skill level 生成skill des 数组
+        - 有skill 描述 把amount添加到对应数组中
+        - 无skill 描述 amount 为0 添加到对应数组中
+    - 把这5个 skillDes 数组作为series里的数据 stack 为 teacher
+
+    - students里的interest 数组为另一组数据 stack 为 interest

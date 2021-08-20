@@ -1,7 +1,8 @@
-import * as Highcharts from 'highcharts/highmaps';
+import Highcharts from 'highcharts/highmaps';
 import HighchartsReact from 'highcharts-react-official';
 import { useEffect, useState } from 'react';
 import statisticService from '../../app/services/statisticService';
+import { Statistic } from '../../app/model/statistics';
 
 const mockData: [string, number][] = [
   ['fo', 0],
@@ -219,9 +220,48 @@ const mockData: [string, number][] = [
   ['np', 212]
 ];
 
-export default function Distribution() {
-  const [worldMap, setWorldMap] = useState<any>(null);
-  const [options, setOptions] = useState<any>();
+interface DistributionProps {
+  data: Statistic[];
+  title: string
+}
+
+interface Properties {
+  'hc-key': string;
+  name: string;
+}
+
+interface Feature {
+  type: string;
+  properties: Properties;
+}
+
+interface WorldMap {
+  features: Feature[];
+}
+
+export default function Distribution({data, title}: DistributionProps) {
+  const [worldMap, setWorldMap] = useState<WorldMap>(null);
+  const [options, setOptions] = useState<any>({
+    colorAxis: {
+      min: 0,
+      stops: [
+        [0, '#fff'],
+        [0.5, Highcharts.getOptions().colors[0]],
+        [1, '#1890ff'],
+      ],
+    },
+    legend: {
+      layout: 'vertical',
+      align: 'left',
+      verticalAlign: 'bottom',
+    },
+    credits: {
+      enabled: false,
+    },
+    exporting: {
+      enabled: false,
+    }
+  });
 
   useEffect(() => {
     async function fetchWorldMap() {
@@ -238,17 +278,29 @@ export default function Distribution() {
   }, []);
 
   useEffect(() => {
-    const options = {
+    if(!worldMap || !data) {
+      return;
+    }
+    const newOptions = {
       title:{
-        text:'c title'
+        text: title.charAt(0).toUpperCase() + title.slice(1)
       },
       series:[{
         mapData: worldMap,
-        data:mockData
-      }]
+        data: data.map(item => {
+          const target = worldMap.features.find((feature) => item.name === feature.properties.name);
+          return target ? [target.properties['hc-key'], item.amount]: [];
+        }),
+        name: 'Total',
+        states: {
+          hover: {
+            color: '#a4edba',
+          },
+        },
+      }],
     };
-    setOptions(options);
-  }, [worldMap]);
+    setOptions(newOptions);
+  }, [worldMap, data, title]);
 
   return (
     <HighchartsReact

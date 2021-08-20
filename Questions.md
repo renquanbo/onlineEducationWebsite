@@ -85,3 +85,51 @@ TableProps<any> = ({
 })
 ```
 怎么理解, 它是一个函数的传入参数声明吗
+
+## Questions 18/08/2021 - 21/08/2021
+怎么定义这个`skills`类型（这是调用`/api​/statistics​/teacher` 这个接口返回的数据其中的一个属性, 我理解它是一个object类型 
+```json
+{
+    "country": [...],
+    "createdAt": [...],
+    "skills": {
+        "C": [
+            {
+            "name": "level",
+            "level": 4,
+            "amount": 12
+            },
+            {
+            "name": "level",
+            "level": 2,
+            "amount": 7
+            },
+            ...
+        ],
+        "Python": [
+            {
+            "name": "level",
+            "level": 3,
+            "amount": 12
+            },
+            ...
+        ],
+        "C++": [
+            {
+            "name": "level",
+            "level": 4,
+            "amount": 14
+            }
+            ...
+        ]
+    }
+}
+```
+随着写代码，发现它应该是这样的类型  
+```typescript
+skills: {
+    [key: string] : SkillStatistic[]
+};
+```
+
+- 另一个问题是 枚举类型 能不能在Typescript里当函数参数
