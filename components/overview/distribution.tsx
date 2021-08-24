@@ -1,6 +1,6 @@
 import Highcharts from 'highcharts/highmaps';
 import HighchartsReact from 'highcharts-react-official';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import statisticService from '../../app/services/statisticService';
 import { Statistic } from '../../app/model/statistics';
 
@@ -262,6 +262,18 @@ export default function Distribution({data, title}: DistributionProps) {
       enabled: false,
     }
   });
+  const charRef = useRef(null);
+
+  useEffect(() => {
+    const { chart } = charRef.current;
+    const timer = setTimeout(() => {
+      chart.reflow();
+    }, 30);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   useEffect(() => {
     async function fetchWorldMap() {
@@ -307,6 +319,7 @@ export default function Distribution({data, title}: DistributionProps) {
       constructorType={'mapChart'}
       highcharts={Highcharts}
       options={options}
+      ref={charRef}
     />
   )
 }

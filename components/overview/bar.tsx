@@ -1,6 +1,6 @@
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SkillStatistic, Statistic } from "../../app/model/statistics";
 import { SkillDes } from '../../app/lib/constant';
 
@@ -14,11 +14,10 @@ type ISeriesItem = {
   name: string;
   stack: string;
   data: number[];
+  type: "column";
 };
 
-// const generateSeries = () => {}
-
-const generateSeriesItem = (level: number, data: [SkillStatistic[]]): number[] => {
+const generateSeriesItem = (level: number, data: SkillStatistic[][]): number[] => {
   let result: number[] = []
   data.map((item) => {
     const target = item.find(element => element.level === level);
@@ -32,7 +31,7 @@ const generateSeriesItem = (level: number, data: [SkillStatistic[]]): number[] =
 }
 
 export default function BarChart({ data }: BarChartsProps) {
-  const [options, setOptions] = useState<any>({
+  const [options, setOptions] = useState<Highcharts.Options>({
     chart: {
       type: 'column',
     },
@@ -55,10 +54,11 @@ export default function BarChart({ data }: BarChartsProps) {
       enabled: false,
     },
     tooltip: {
-      // 这里使用this会报错
-      // formatter: function () {
-      //   return this.series.name
-      // }
+      formatter: function () {
+        return this.series.name === 'interest'
+          ? `${this.series.name}: ${this.y}`
+          : `<b>${this.x}</b><br/>${this.series.name}: ${this.y}<br/>total: ${this.point.total}`;
+      }
     },
     plotOptions: {
       column: {
@@ -72,32 +72,46 @@ export default function BarChart({ data }: BarChartsProps) {
       enabled: false,
     }
   });
+  const charRef = useRef(null);
+
+  useEffect(() => {
+    const { chart } = charRef.current;
+    const timer = setTimeout(() => {
+      chart.reflow();
+    }, 30);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   useEffect(() => {
     if (!data['teacher']) {
       return;
     }
     const categories = Object.entries(data['teacher']).map((item) => (item[0]));
-    const teacherSkillsArr = Object.entries(data['teacher']).map((item) => (item[1]));
+    const teacherSkillsArr = Object.entries(data['teacher']).map((item:[string, SkillStatistic[]]) => (item[1]));
     let series: ISeriesItem[] = []
     for (const value in SkillDes) {
       const level = Number(value);
       if (!isNaN(level)) {
         series.push({
           name: SkillDes[level],
-          data: generateSeriesItem(level, teacherSkillsArr as [SkillStatistic[]]),
-          stack: 'teacher'
+          data: generateSeriesItem(level, teacherSkillsArr),
+          stack: 'teacher',
+          type: "column"
         })
       }
     }
     const interestArr = data['interest'] as Statistic[];
-    const interestItem = {
-      name: '',
+    const interestItem: ISeriesItem = {
+      name: 'interest',
       stack: 'interest',
       data: categories.map(item => {
         const target = interestArr?.find(element => element.name === item)
         return !!target ? target.amount : 0;
-      })
+      }),
+      type: "column"
     }
     series.push(interestItem);
     setOptions({
@@ -112,6 +126,7 @@ export default function BarChart({ data }: BarChartsProps) {
     <HighchartsReact
       highcharts={Highcharts}
       options={options}
+      ref={charRef}
     />
   )
 }

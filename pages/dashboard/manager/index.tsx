@@ -12,6 +12,7 @@ import { RoleEnum } from '../../../app/lib/constant/roleEnum';
 import PieChart from '../../../components/overview/pie';
 import LineChart from '../../../components/overview/line';
 import BarChart from '../../../components/overview/bar';
+import HeatChart from '../../../components/overview/heat';
 
 const StyledLabelContainer = styled(Col)`
   display: flex;
@@ -223,6 +224,16 @@ const ManagerDashboard = () => {
               teacher: teacherStatistics?.skills,
               interest: studentStatistics?.interest
             }}></BarChart>
+          </Card>
+        </Col>
+      </Row>
+      <Row gutter={[6,16]}>
+        <Col span={24}>
+          <Card title="Course Schedule">
+            <HeatChart
+              data={courseStatistics?.classTime }
+              title="Course schedule per weekday"
+            />
           </Card>
         </Col>
       </Row>

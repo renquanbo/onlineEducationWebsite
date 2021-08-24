@@ -24,7 +24,7 @@ function UserIcon() {
 
     return (
         <Dropdown overlay={menu} trigger={['click']} placement="bottomLeft">
-            <Avatar icon={<UserOutlined />} />
+            <Avatar icon={<UserOutlined />} style={{marginLeft: '2em', marginTop: 5}}/>
         </Dropdown>
     )
 }
