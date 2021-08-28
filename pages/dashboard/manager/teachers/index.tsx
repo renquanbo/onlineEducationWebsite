@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { ChangeEvent, useRef, useState } from "react";
 import { SkillDes } from "../../../../app/lib/constant";
 import { phone } from "../../../../app/lib/constant/rule";
-import { TeachersResponse, Teacher, Skill, UpdateTeacherRequest, AddTeacherRequest } from "../../../../app/model/teacher";
+import { TeachersResponse, Teacher, Skill, UpdateTeacherRequest, AddTeacherRequest, TeacherRequest } from "../../../../app/model/teacher";
 import storage from "../../../../app/services/storage";
 import teacherService from "../../../../app/services/teacherService";
 import { useListEffect } from "../../../../components/custom-hooks/list-effect";
@@ -33,7 +33,7 @@ const Teachers = () => {
   const [isEditingTeacher, setIsEditingTeacher] = useState(false);
   const [editingTeacher, setEditingTeacher] = useState<Teacher | null>(null);
   const { data, paginator, total, loading, modifyDataSuccessTimes,setPaginator, setLoading, setData, setTotal, setModifyDataSuccessTimes} = useListEffect
-    <TeachersResponse, Teacher>
+    <TeacherRequest, TeachersResponse, Teacher>
     (teacherService.getTeachers.bind(teacherService), "teachers", true);
 
   const columns: ColumnType<Teacher>[] = [

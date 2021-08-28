@@ -1,3 +1,5 @@
+import { Course } from "./course";
+
 export interface BasicStatistics {
   total: number;
   lastMonthAdded: number;
@@ -57,3 +59,31 @@ export interface StatisticCourseResponse {
   type: Statistic[];
   classTime: ClassTimeStatistic[];
 }
+
+export interface StudentCourseDetailStatistic {
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  courseDate: string;
+  studentId: number;
+  course: Course
+}
+
+export interface StudentCourseStatistic {
+  name: string;
+  amount: number;
+  courses: StudentCourseDetailStatistic[]
+}
+
+export interface StudentRecommendCourseStatistic {
+  name: string;
+  amount: number;
+  courses: Course[]
+}
+
+export interface StudentStatistic {
+  own: StudentCourseStatistic;
+  recommend: StudentRecommendCourseStatistic;
+}
+
+export type StudentStatisticResponse = StudentStatistic;

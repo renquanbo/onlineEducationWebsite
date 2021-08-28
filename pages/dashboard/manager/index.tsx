@@ -13,6 +13,7 @@ import PieChart from '../../../components/overview/pie';
 import LineChart from '../../../components/overview/line';
 import BarChart from '../../../components/overview/bar';
 import HeatChart from '../../../components/overview/heat';
+import OverviewCard from '../../../components/dashboard/overview-card';
 
 const StyledLabelContainer = styled(Col)`
   display: flex;
@@ -102,67 +103,34 @@ const ManagerDashboard = () => {
     <AppLayout>
       <Row align="middle" gutter={[24, 16]}>
         <Col span={8}>
-          <StyledCard bordered={true} style={{ background: "rgb(24, 144, 255)" }}>
-            <Row>
-              <StyledLabelContainer span={6}>
-                <SolutionOutlined></SolutionOutlined>
-              </StyledLabelContainer>
-              <Col span={18}>
-                <h3>TOTAL STUDENTS</h3>
-                <h2>{overview?.student?.total}</h2>
-                <Progress
-                  percent={100 - getPercent(overview?.student?.lastMonthAdded, overview?.student?.total)}
-                  showInfo={false}
-                  size="small"
-                  strokeColor="white"
-                  trailColor="lightgreen"
-                />
-                <p>{getPercent(overview?.student?.lastMonthAdded, overview?.student?.total)}% Increase in 30 Days</p>
-              </Col>
-            </Row>
-          </StyledCard>
+          <OverviewCard
+            total={overview?.student?.total}
+            percent={getPercent(overview?.student?.lastMonthAdded, overview?.student?.total)}
+            title='TOTAL STUDENTS'
+            subTitle='Increase in 30 Days'
+            icon={<SolutionOutlined/>}
+            style={{ background: "rgb(24, 144, 255)" }}
+          ></OverviewCard>
         </Col>
         <Col span={8}>
-          <StyledCard bordered={true} style={{ background: "rgb(103, 59, 183)" }}>
-            <Row>
-              <StyledLabelContainer span={6}>
-                <DeploymentUnitOutlined />
-              </StyledLabelContainer>
-              <Col span={18}>
-                <h3>TOTAL TEACHERS</h3>
-                <h2>{overview?.teacher?.total}</h2>
-                <Progress
-                  percent={100 - getPercent(overview?.teacher?.lastMonthAdded, overview?.teacher?.total)}
-                  showInfo={false}
-                  size="small"
-                  strokeColor="white"
-                  trailColor="lightgreen"
-                />
-                <p>{getPercent(overview?.teacher?.lastMonthAdded, overview?.teacher?.total)}% Increase in 30 Days</p>
-              </Col>
-            </Row>
-          </StyledCard>
+          <OverviewCard
+            total={overview?.teacher?.total}
+            percent={getPercent(overview?.teacher?.lastMonthAdded, overview?.teacher?.total)}
+            title='TOTAL TEACHERS'
+            subTitle='Increase in 30 Days'
+            icon={<DeploymentUnitOutlined/>}
+            style={{ background: "rgb(103, 59, 183)" }}
+          ></OverviewCard>
         </Col>
         <Col span={8}>
-          <StyledCard bordered={true} style={{ background: "rgb(255, 170, 22)" }}>
-            <Row>
-              <StyledLabelContainer span={6}>
-                <ReadOutlined />
-              </StyledLabelContainer>
-              <Col span={18}>
-                <h3>TOTAL COURSES</h3>
-                <h2>{overview?.course?.total}</h2>
-                <Progress
-                  percent={100 - getPercent(overview?.course?.lastMonthAdded, overview?.course?.total)}
-                  showInfo={false}
-                  size="small"
-                  strokeColor="white"
-                  trailColor="lightgreen"
-                />
-                <p>{getPercent(overview?.course?.lastMonthAdded, overview?.course?.total)}% Increase in 30 Days</p>
-              </Col>
-            </Row>
-          </StyledCard>
+          <OverviewCard
+            total={overview?.course?.total}
+            percent={getPercent(overview?.course?.lastMonthAdded, overview?.course?.total)}
+            title='TOTAL COURSES'
+            subTitle='Increase in 30 Days'
+            icon={<ReadOutlined/>}
+            style={{ background: "rgb(255, 170, 22)" }}
+          ></OverviewCard>
         </Col>
       </Row>
 

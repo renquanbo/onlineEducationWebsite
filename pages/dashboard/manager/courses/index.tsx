@@ -1,5 +1,5 @@
 import { List, Spin, BackTop, Button } from "antd";
-import { Course, CourseResponse } from "../../../../app/model/course";
+import { Course, CourseRequest, CourseResponse } from "../../../../app/model/course";
 import courseService from "../../../../app/services/courseService";
 import AppLayout from "../../../../components/layout/AppLayout";
 
@@ -12,7 +12,7 @@ import storage from "../../../../app/services/storage";
 
 const AllCourses = () => {
   const {data, paginator, setPaginator, hasMore} = useListEffect
-    <CourseResponse, Course> 
+    <CourseRequest, CourseResponse, Course> 
     (courseService.getCourses.bind(courseService), "courses", false);
 
   return (

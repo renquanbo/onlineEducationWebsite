@@ -1,6 +1,6 @@
 import axios from "axios";
 import { IResponse } from "../model/api";
-import { StatisticCourseResponse, StatisticOverviewResponse, StatisticStudentResponse, StatisticTeacherResponse } from "../model/statistics";
+import { StatisticCourseResponse, StatisticOverviewResponse, StatisticStudentResponse, StatisticTeacherResponse, StudentStatisticResponse } from "../model/statistics";
 import { BaseApiService } from "./baseApiService";
 
 class StatisticService extends BaseApiService {
@@ -18,6 +18,9 @@ class StatisticService extends BaseApiService {
     }
     getCourseStatistics(): Promise<IResponse<StatisticCourseResponse>> {
         return this.get('statistics/course');
+    }
+    getStudentStatisticsByStudent(): Promise<IResponse<StudentStatisticResponse>> {
+        return this.get('statistics/student');
     }
 }
 

@@ -1,5 +1,6 @@
 import { ListResponse } from "./api";
 import { Course, StudentCourse } from "./course";
+import { StudentCourseDetailStatistic } from "./statistics";
 
 export interface StudentType {
     id: number;
@@ -18,7 +19,7 @@ export interface Student<T = Course> {
     type: StudentType;
 }
 
-export interface StudentResponse extends ListResponse{
+export interface StudentResponse extends ListResponse {
     students: Student[]
 }
 
@@ -32,11 +33,11 @@ export interface AddStudentRequest {
 export type AddStudentResponse = Student;
 export type UpdateStudentResponse = Student;
 
-export interface UpdateStudentRequest extends AddStudentRequest{
+export interface UpdateStudentRequest extends AddStudentRequest {
     id: number
 }
 
-export interface StudentProfile extends Student<StudentCourse>{
+export interface StudentProfile extends Student<StudentCourse> {
     address: string | null;
     phone: number;
     gender: number;
@@ -49,3 +50,8 @@ export interface StudentProfile extends Student<StudentCourse>{
     description: string;
 }
 
+export type StudentOwnCourse = StudentCourseDetailStatistic;
+
+export interface StudentOwnCoursesResponse extends ListResponse {
+    courses: StudentOwnCourse[];
+}

@@ -1,13 +1,16 @@
-import { Badge, Button, Col, Dropdown, List, notification, Row, Spin, Tabs } from "antd";
+import { Badge, Button, Col, Dropdown, List, notification, Row, Space, Spin, Tabs } from "antd";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Message, MessagesRequest, MessagesResponse, MessageType } from "../../app/model/message";
 import messageService from "../../app/services/messageService";
 import { useListEffect } from "../custom-hooks/list-effect";
 import styled from 'styled-components';
-import { BellOutlined } from "@ant-design/icons";
+import { BellOutlined, UserOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import storage from "../../app/services/storage";
+import Avatar from "antd/lib/avatar/avatar";
+import { formatDistanceToNow } from "date-fns";
+import { useMsgStatistic } from "../custom-hooks/provider";
 
 const HeaderIcon = styled.span`
   font-size: 18px;
@@ -105,9 +108,17 @@ interface MessagesProps {
 
 function Messages(props: MessagesProps): JSX.Element {
   const { paginator, setPaginator, hasMore, data, setData } = useListEffect<
+    MessagesRequest,
     MessagesResponse,
     Message
-  >(messageService.getMessages.bind(messageService), 'messages', false);
+  >(messageService.getMessages.bind(messageService), 'messages', false, {type: props.type});
+
+  useEffect(() => {
+    if(data && data.length) {
+      const ids = data.filter((item) => item.status === 0).map((item) => item.id);
+      console.log(data);
+    }
+  },[data])
 
   return (
     <InfiniteScroll
@@ -122,7 +133,45 @@ function Messages(props: MessagesProps): JSX.Element {
       endMessage={<div style={{ textAlign: 'center' }}>No more</div>}
       scrollableTarget={props.scrollTarget}
     >
-      <List></List>
+      <List
+        itemLayout="vertical"
+        dataSource={data}
+        renderItem={(item, index) => (
+          <List.Item
+            key={index}
+            style={{ opacity: item.status ? 0.4 : 1 }}
+            actions={[
+              // eslint-disable-next-line react/jsx-key
+              <Space>{formatDistanceToNow(new Date(item.createdAt), { addSuffix: true })}</Space>,
+            ]}
+            onClick= {() => {
+              if (item.status === 1) {
+                return;
+              }
+
+              messageService.markAsRead([item.id]).then((res) => {
+                if (res.data) {
+                  const target = data.find((msg) => item.id === msg.id);
+
+                  target.status = 1;
+                  setData([...data]);
+                }
+
+                if (props.onRead) {
+                  props.onRead(1);
+                }
+              });
+            }}
+          >
+            <List.Item.Meta
+              avatar={<Avatar icon={<UserOutlined />} />}
+              title={item.from.nickname}
+              description={item.content}
+            />
+          </List.Item>
+        )}
+      >
+      </List>
     </InfiniteScroll>
   );
 }
@@ -130,12 +179,30 @@ function Messages(props: MessagesProps): JSX.Element {
 export default function MessagePanel() {
   const types: MessageType[] = ['notification', 'message'];
   const [activeType, setActiveType] = useState<MessageType>('notification');
+  const { msgStore, dispatch } = useMsgStatistic();
   const [clean, setClean] = useState<{ [key in MessageType]: number }>({
     notification: 0,
     message: 0,
   });
   const [message, setMessage] = useState<Message>(null);
+
   useEffect(() => {
+    messageService.getMessageStatistic().then((res) => {
+      const { data } = res;
+
+      if (!!data) {
+        const {
+          receive: { notification, message },
+        } = data;
+
+        dispatch({ type: 'increment', payload: { type: 'message', count: message.unread } });
+        dispatch({
+          type: 'increment',
+          payload: { type: 'notification', count: notification.unread },
+        });
+      }
+    });
+
     const sse = messageService.messageEvent();
 
     sse.onmessage = (event) => {
@@ -151,16 +218,21 @@ export default function MessagePanel() {
             description: content.content,
           });
         }
+
+        setMessage(content);
+        dispatch({ type: 'increment', payload: { type: content.type, count: 1 } });
       }
     }
 
     return () => {
       sse.close();
+      dispatch({ type: 'reset' });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <Badge size="small" count={0} offset={[10, 0]} >
+    <Badge size="small" count={msgStore.total} offset={[10, 0]} >
       <HeaderIcon>
         <Dropdown
           overlayStyle={{
@@ -204,13 +276,13 @@ export default function MessagePanel() {
 
               <Footer style={{ alignContent: 'middle', justifyContent: 'middle' }}>
                 <Col span={12}>
-                  <Button onClick={() => { }}>
+                  <Button onClick={() => setClean({ ...clean, [activeType]: ++clean[activeType] })}>
                     Mark all as read
                   </Button>
                 </Col>
                 <Col span={12}>
                   <Button>
-                    <Link href={`/dashboard/${storage.userInfo.role}/message`}>View history</Link>
+                    <Link href={`/dashboard/${storage?.userInfo?.role}/message`}>View history</Link>
                   </Button>
                 </Col>
               </Footer>

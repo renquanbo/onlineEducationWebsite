@@ -1,11 +1,19 @@
 import { IResponse } from "../model/api";
-import { MessagesRequest, MessagesResponse } from "../model/message";
+import { MessagesRequest, MessagesResponse, MessageStatisticResponse } from "../model/message";
 import { BaseApiService } from "./baseApiService";
 import storage from "./storage";
 
 class MessageService extends BaseApiService {
   getMessages(params?: MessagesRequest):Promise<IResponse<MessagesResponse>> {
     return this.get('message', params);
+  }
+
+  getMessageStatistic(userId?: number): Promise<IResponse<MessageStatisticResponse>> {
+    return this.get<IResponse<MessageStatisticResponse>>('message/statistics', {userId: userId});
+  }
+
+  markAsRead(ids: number[]): Promise<IResponse<boolean>> {
+    return this.put('message', { status: 1, ids });
   }
 
   messageEvent(): EventSource {

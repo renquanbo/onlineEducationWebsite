@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { IResponse, ListResponse, Paginator } from "../../app/model/api";
 
-export function useListEffect<T extends ListResponse, U>(
+export function useListEffect<REQ, T extends ListResponse, U>(
   apiFn: (params: any) => Promise<IResponse<T>>,
   sourceKey: keyof T,
-  onlyFresh = true
+  onlyFresh = true,
+  paramsWithoutPaginator?: any
 ) {
   const [data, setData] = useState<U[]>([]);
   const [paginator, setPaginator] = useState<Paginator>({ limit: 20, page: 1 });
@@ -15,7 +16,8 @@ export function useListEffect<T extends ListResponse, U>(
 
   useEffect(() => {
     setLoading(true);
-    apiFn(paginator).then((res) => {
+    const params = {...paramsWithoutPaginator, ... paginator}
+    apiFn(params).then((res) => {
       const { data: newData } = res;
       if(newData === undefined) {
         return;
