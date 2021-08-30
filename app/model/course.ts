@@ -115,3 +115,7 @@ export interface ScheduleRequest {
   chapters?: Omit<Chapter, 'id'>[];
   classTime?: string[];
 }
+
+export interface ClassSchedule extends Course {
+  schedule: Schedule;
+}

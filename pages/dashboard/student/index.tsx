@@ -120,10 +120,13 @@ const StudentDashboard = () => {
 
   useEffect(() => {
     async function fetchOverview() {
-      const { data } = await statisticService.getStudentStatisticsByStudent()
-      if (!!data) {
-        setStudentStatistic(data);
-        dispatch({ type: 'setRecommend', payload: data.recommend.courses });
+      let res = await statisticService.getStudentStatisticsByStudent();
+      if(!res) {
+        return
+      }
+      if (!!res.data) {
+        setStudentStatistic(res.data);
+        dispatch({ type: 'setRecommend', payload: res.data.recommend.courses });
       }
     }
     fetchOverview();

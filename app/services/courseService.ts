@@ -1,5 +1,5 @@
 import { IResponse, Paginator } from "../model/api";
-import { AddCourseRequest, AddCourseResponse, CourseDetailResponse, CourseRequest, CourseResponse, CourseType, Schedule, ScheduleRequest, UpdateCourseRequest, UpdateCourseResponse } from "../model/course";
+import { AddCourseRequest, AddCourseResponse, ClassSchedule, CourseDetailResponse, CourseRequest, CourseResponse, CourseType, Schedule, ScheduleRequest, UpdateCourseRequest, UpdateCourseResponse } from "../model/course";
 import { StudentOwnCoursesResponse } from "../model/student";
 import { BaseApiService } from "./baseApiService";
 
@@ -31,6 +31,9 @@ class CourseService extends BaseApiService {
     getScheduleById(scheduleId: number): Promise<IResponse<Schedule>> {
         return this.get<IResponse<Schedule>>('courses/schedule', {scheduleId: scheduleId});
     }
+    getClassSchedule(userId: number): Promise<IResponse<ClassSchedule[]>> {
+        return this.get<IResponse<ClassSchedule[]>>('class/schedule', {userId: userId});
+    } 
 }
 
 const courseService = new CourseService();
