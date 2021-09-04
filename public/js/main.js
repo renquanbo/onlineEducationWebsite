@@ -95,18 +95,18 @@ $(document).ready(function () {
 
 	$("html").addClass(html_class);
 
-	$(function () {
-		var itemNum = $(".gallery-box .items .item").length;//要旋转的div的数量
-		var itemDeg = 360 / itemNum;//计算平均偏移角度，后面的itemDeg*index是不同索引div的偏移角度
-		$(".items>.item").each(function (index, element) {
-			$(element).css({
-				//给每一个item设置好位置
-				//rotateY让每一个item绕着Y轴偏移，itemDeg*index是不同索引div的偏移角度
-				//translateZ是控制item在角度偏移后，往他们的正上方移动的距离，数值越大旋转的范围越大
-				transform: "rotateY(" + itemDeg * index + "deg) translateZ(280px)"
-			});
-		});
-	});
+	// $(function () {
+		// var itemNum = $(".gallery-box .items .item").length;//要旋转的div的数量
+		// var itemDeg = 360 / itemNum;//计算平均偏移角度，后面的itemDeg*index是不同索引div的偏移角度
+		// $(".items>.item").each(function (index, element) {
+		// 	$(element).css({
+		// 		//给每一个item设置好位置
+		// 		//rotateY让每一个item绕着Y轴偏移，itemDeg*index是不同索引div的偏移角度
+		// 		//translateZ是控制item在角度偏移后，往他们的正上方移动的距离，数值越大旋转的范围越大
+		// 		transform: "rotateY(" + itemDeg * index + "deg) translateZ(280px)"
+		// 	});
+		// });
+	// });
 
 });
 

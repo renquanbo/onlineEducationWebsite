@@ -7,7 +7,7 @@ import React from 'react';
 import Header from '../components/layout/Header';
 
 export default function Page() {
-  const styles = new Array(8).fill(0).map((_, index) => ({ '--i': index } as React.CSSProperties));
+  const meritStudentsImages = new Array(10).fill(0);
 
   return (
     <>
@@ -40,39 +40,13 @@ export default function Page() {
           >
             <div className="gallery-box">
               <div className="items">
-                <div className="item">
-                  <img src="images/5.png"></img>
-                </div>
-                <div className="item">
-                  <img src="images/5_2.png"></img>
-                </div>
-                <div className="item">
-                  <img src="images/5_3.png"></img>
-                </div>
-                <div className="item">
-                  <img src="images/5_4.png"></img>
-                </div>
-                <div className="item">
-                  <img src="images/5_5.png"></img>
-                </div>
-                <div className="item">
-                  <img src="images/5_6.png"></img>
-                </div>
-                <div className="item">
-                  <img src="images/5_7.png"></img>
-                </div>
-                <div className="item">
-                  <img src="images/5_8.png"></img>
-                </div>
+                {meritStudentsImages.map((item, index) => (
+                  <div style={{transform: `rotateY(${360/meritStudentsImages.length * index}deg) translateZ(280px)`}} key={index} className="item">
+                    <img src={`images/5${index === 0 ? '' : '_' + (index + 1)}.png`} />
+                  </div>
+                ))}
               </div>
             </div>
-            {/* <div className="gallery-box">
-              {styles.map((item, index) => (
-                <span style={item}>
-                  <img src={`images/5${index === 0 ? '' : '_' + (index + 1)}.png`} />
-                </span>
-              ))}
-            </div> */}
           </div>
         </div>
       </div>
